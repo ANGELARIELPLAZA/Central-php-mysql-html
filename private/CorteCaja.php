@@ -5,11 +5,19 @@ if (empty($_SESSION["usuario"])) {
     header("Location: formulario.html");
     exit();
 }
+include './db/conn.php';
+
+
+$hoy = date('d-m-Y'); // Obtener la fecha actual en formato 'YYYY-MM-DD'
+// Consulta SQL para obtener los datos de la tabla ventas
+$sql = "SELECT * FROM ventas WHERE fecha_registro = '$hoy'";
+$resultado = $conexion->query($sql);
 ?>
 
 <?php include '../public/header.php'; ?>
 
 <head>
+    <!-- ... Tu código HTML existente para estilos y título ... -->
     <meta charset="UTF-8">
     <title>Registro de Ventas</title>
     <style>
@@ -28,8 +36,9 @@ if (empty($_SESSION["usuario"])) {
 </head>
 
 <body>
-    <!-- HTML: contenido para usuarios logueados -->
-    <h1>Bienvenido, <?php echo $_SESSION["usuario"]; ?></h1>
+    <!-- ... Código HTML existente ... -->
+  <!-- HTML: contenido para usuarios logueados -->
+  <h1>Bienvenido, <?php echo $_SESSION["usuario"]; ?></h1>
     <a href="CorteCaja.php">Corte de caja</a>
     <a href="Caja.php">Caja</a>
     <a href="logout.php">Cerrar sesión</a>
@@ -63,32 +72,31 @@ if (empty($_SESSION["usuario"])) {
     <table class="table table-bordered table-striped mt-4">
         <thead class="thead-dark">
             <tr>
-                <th>ID Venta</th>
                 <th>Fecha</th>
-                <th>Producto</th>
+                <th>Hora</th>
+                <th>Ruta</th>
                 <th>Cantidad</th>
                 <th>Total</th>
             </tr>
         </thead>
         <tbody>
-            <tr>
-                <td>1</td>
-                <td>2023-11-25</td>
-                <td>Producto A</td>
-                <td>5</td>
-                <td>$250.00</td>
-            </tr>
-            <tr>
-                <td>2</td>
-                <td>2023-11-26</td>
-                <td>Producto B</td>
-                <td>3</td>
-                <td>$120.00</td>
-            </tr>
-            <!-- Puedes agregar más filas con datos de ventas -->
+            <?php
+            if ($resultado->num_rows > 0) {
+                while ($fila = $resultado->fetch_assoc()) {
+                    echo "<tr>";
+                    echo "<td>" . $fila['fecha_registro'] . "</td>";
+                    echo "<td>" . $fila['hora_registro'] . "</td>";
+                    echo "<td>" . $fila['nombre_ruta'] . "</td>";
+                    echo "<td>" . $fila['cantidad_boletos'] . "</td>";
+                    echo "<td>$" . $fila['total'] . "</td>";
+                    echo "</tr>";
+                }
+            } else {
+                echo "<tr><td colspan='5'>No se encontraron resultados.</td></tr>";
+            }
+            ?>
         </tbody>
     </table>
-
 </body>
 
 </html>

@@ -1,4 +1,15 @@
-<?php include '../public/header.php'; ?>
+<?php
+session_start();
+
+if (empty($_SESSION["usuario"])) {
+    header("Location: formulario.html");
+    exit();
+}
+
+include '../public/header.php';
+include './db/conn.php';
+?>
+
 <head>
     <meta charset="UTF-8">
     <title>Ticket de Compra</title>
@@ -9,24 +20,29 @@
             color: #000000;
 
         }
+
         .ticket {
             width: 300px;
             margin: 20px auto;
             padding: 10px;
             border: 1px solid #000;
         }
+
         .header {
             text-align: center;
             font-weight: bold;
         }
+
         .info {
             margin-top: 10px;
         }
+
         .item {
             margin-top: 5px;
         }
     </style>
 </head>
+
 <body>
     <div class="ticket">
         <div class="header">
@@ -57,4 +73,5 @@
         };
     </script>
 </body>
+
 </html>

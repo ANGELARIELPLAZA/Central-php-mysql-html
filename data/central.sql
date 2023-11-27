@@ -53,6 +53,7 @@ CREATE TABLE IF NOT EXISTS `ventas` (
   `total` varchar(50) DEFAULT NULL,
   `fecha_registro` varchar(50) DEFAULT NULL,
   `hora_registro` varchar(50) DEFAULT NULL,
+  `turno` int DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=67 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
